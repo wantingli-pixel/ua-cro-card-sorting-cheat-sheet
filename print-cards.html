@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Card Sort Deck — Print &amp; Cut (60 cards)</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&display=swap" rel="stylesheet">
+<style>
+
+body {
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+    background: #f4f3f0;
+    color: #1a1a1a;
+}
+
+.screen-header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.screen-header h1 { font-size: 18px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+.screen-header p { font-size: 13px; color: #999; margin: 4px 0 0; }
+.print-btn {
+    background: #f0a830;
+    color: #1a1a1a;
+    border: none;
+    padding: 10px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+.print-btn:hover { background: #d9931f; }
+
+.instructions {
+    padding: 20px 40px;
+    font-size: 13px;
+    color: #666;
+    border-bottom: 1px solid #e0ddd8;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+.instructions span { display: flex; align-items: center; gap: 6px; }
+
+.page-wrapper { padding: 20px 40px 40px; }
+
+.page-break-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #bbb;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 24px 0 12px;
+}
+.page-break-label:first-child { margin-top: 0; }
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 0.5px solid #ddd;
+}
+
+.card-item {
+    border: 0.5px dashed #bbb;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 12px 10px;
+    position: relative;
+    background: #fff;
+    text-align: center;
+}
+.card-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.3;
+}
+.card-num {
+    position: absolute;
+    bottom: 7px;
+    right: 9px;
+    font-size: 9px;
+    color: #ccc;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+}
+
+@media print {
+    @page { size: A4 portrait; margin: 10mm; }
+    body { background: #fff; }
+    .screen-header, .instructions, .page-break-label { display: none; }
+    .print-btn { display: none; }
+    .page-wrapper { padding: 0; margin: 0; }
+    .page-break-group { page-break-after: always; }
+    .page-break-group:last-child { page-break-after: avoid; }
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 60mm);
+        gap: 0;
+        border: none;
+    }
+    .card-item {
+        width: 60mm;
+        height: 44mm;
+        border: 0.5px dashed #ccc;
+        page-break-inside: avoid;
+        background: #fff;
+    }
+    .card-label { font-size: 12pt; }
+    .card-num { font-size: 7pt; }
+}
+</style>
+</head>
+<body>
+
+<div class="screen-header">
+    <div>
+        <h1>Card Sort Deck — Print &amp; Cut</h1>
+        <p>60 cards &nbsp;|&nbsp; 5 pages &nbsp;|&nbsp; One combined deck per participant</p>
+    </div>
+    <button class="print-btn" onclick="window.print()">Print cards</button>
+</div>
+
+<div class="instructions">
+    <span>Print on A4, portrait, 100% scale (no fit-to-page)</span>
+    <span>Cut along dashed lines</span>
+    <span>Shuffle well before each participant</span>
+    <span>One set per participant</span>
+</div>
+
+<div class="page-wrapper">
+
+    <!-- Page 1: cards 01–12 (Sport / Activity) -->
+    <div class="page-break-label">Page 1 of 5 — cards 01–12</div>
+    <div class="page-break-group">
+        <div class="cards-grid">
+            <div class="card-item"><span class="card-label">Running</span><span class="card-num">01</span></div>
+            <div class="card-item"><span class="card-label">Trail Running</span><span class="card-num">02</span></div>
+            <div class="card-item"><span class="card-label">Training</span><span class="card-num">03</span></div>
+            <div class="card-item"><span class="card-label">Gym &amp; Fitness</span><span class="card-num">04</span></div>
+            <div class="card-item"><span class="card-label">Soccer</span><span class="card-num">05</span></div>
+            <div class="card-item"><span class="card-label">Football</span><span class="card-num">06</span></div>
+            <div class="card-item"><span class="card-label">Sportstyle</span><span class="card-num">07</span></div>
+            <div class="card-item"><span class="card-label">Basketball</span><span class="card-num">08</span></div>
+            <div class="card-item"><span class="card-label">Tennis</span><span class="card-num">09</span></div>
+            <div class="card-item"><span class="card-label">Golf</span><span class="card-num">10</span></div>
+            <div class="card-item"><span class="card-label">Yoga</span><span class="card-num">11</span></div>
+            <div class="card-item"><span class="card-label">Pilates</span><span class="card-num">12</span></div>
+        </div>
+    </div>
+
+    <!-- Page 2: cards 13–24 (Sport / Activity cont + Footwear) -->
+    <div class="page-break-label">Page 2 of 5 — cards 13–24</div>
+    <div class="page-break-group">
+        <div class="cards-grid">
+            <div class="card-item"><span class="card-label">Studio</span><span class="card-num">13</span></div>
+            <div class="card-item"><span class="card-label">Hiking</span><span class="card-num">14</span></div>
+            <div class="card-item"><span class="card-label">Outdoor Adventure</span><span class="card-num">15</span></div>
+            <div class="card-item"><span class="card-label">Cycling</span><span class="card-num">16</span></div>
+            <div class="card-item"><span class="card-label">Pickleball</span><span class="card-num">17</span></div>
+            <div class="card-item"><span class="card-label">Team Sports</span><span class="card-num">18</span></div>
+            <div class="card-item"><span class="card-label">Indoor Training</span><span class="card-num">19</span></div>
+            <div class="card-item"><span class="card-label">Outdoor Sports</span><span class="card-num">20</span></div>
+            <div class="card-item"><span class="card-label">Hybrid Race / Cross-fit</span><span class="card-num">21</span></div>
+            <div class="card-item"><span class="card-label">Running Shoes</span><span class="card-num">22</span></div>
+            <div class="card-item"><span class="card-label">Training Shoes</span><span class="card-num">23</span></div>
+            <div class="card-item"><span class="card-label">Lifestyle Sneakers</span><span class="card-num">24</span></div>
+        </div>
+    </div>
+
+    <!-- Page 3: cards 25–36 (Footwear / Accessories + Apparel start) -->
+    <div class="page-break-label">Page 3 of 5 — cards 25–36</div>
+    <div class="page-break-group">
+        <div class="cards-grid">
+            <div class="card-item"><span class="card-label">Cleats</span><span class="card-num">25</span></div>
+            <div class="card-item"><span class="card-label">Slides &amp; Sandals</span><span class="card-num">26</span></div>
+            <div class="card-item"><span class="card-label">Socks</span><span class="card-num">27</span></div>
+            <div class="card-item"><span class="card-label">Hats &amp; Caps</span><span class="card-num">28</span></div>
+            <div class="card-item"><span class="card-label">Bags &amp; Backpacks</span><span class="card-num">29</span></div>
+            <div class="card-item"><span class="card-label">Gloves</span><span class="card-num">30</span></div>
+            <div class="card-item"><span class="card-label">Headwear</span><span class="card-num">31</span></div>
+            <div class="card-item"><span class="card-label">Water Bottles</span><span class="card-num">32</span></div>
+            <div class="card-item"><span class="card-label">Equipment &amp; Gear</span><span class="card-num">33</span></div>
+            <div class="card-item"><span class="card-label">T-Shirts</span><span class="card-num">34</span></div>
+            <div class="card-item"><span class="card-label">Graphic Tees</span><span class="card-num">35</span></div>
+            <div class="card-item"><span class="card-label">Tops</span><span class="card-num">36</span></div>
+        </div>
+    </div>
+
+    <!-- Page 4: cards 37–48 (Apparel) -->
+    <div class="page-break-label">Page 4 of 5 — cards 37–48</div>
+    <div class="page-break-group">
+        <div class="cards-grid">
+            <div class="card-item"><span class="card-label">Long Sleeve Tops</span><span class="card-num">37</span></div>
+            <div class="card-item"><span class="card-label">Hoodies</span><span class="card-num">38</span></div>
+            <div class="card-item"><span class="card-label">Sweatshirts</span><span class="card-num">39</span></div>
+            <div class="card-item"><span class="card-label">Jumpers</span><span class="card-num">40</span></div>
+            <div class="card-item"><span class="card-label">Jackets</span><span class="card-num">41</span></div>
+            <div class="card-item"><span class="card-label">Vests</span><span class="card-num">42</span></div>
+            <div class="card-item"><span class="card-label">Pants</span><span class="card-num">43</span></div>
+            <div class="card-item"><span class="card-label">Joggers</span><span class="card-num">44</span></div>
+            <div class="card-item"><span class="card-label">Shorts</span><span class="card-num">45</span></div>
+            <div class="card-item"><span class="card-label">Leggings</span><span class="card-num">46</span></div>
+            <div class="card-item"><span class="card-label">Tights</span><span class="card-num">47</span></div>
+            <div class="card-item"><span class="card-label">Dresses &amp; Skirts</span><span class="card-num">48</span></div>
+        </div>
+    </div>
+
+    <!-- Page 5: cards 49–60 (Apparel cont) -->
+    <div class="page-break-label">Page 5 of 5 — cards 49–60</div>
+    <div class="page-break-group">
+        <div class="cards-grid">
+            <div class="card-item"><span class="card-label">Sports Bras</span><span class="card-num">49</span></div>
+            <div class="card-item"><span class="card-label">Compression Wear</span><span class="card-num">50</span></div>
+            <div class="card-item"><span class="card-label">Base Layers</span><span class="card-num">51</span></div>
+            <div class="card-item"><span class="card-label">Outerwear</span><span class="card-num">52</span></div>
+            <div class="card-item"><span class="card-label">Warm-Up Gear</span><span class="card-num">53</span></div>
+            <div class="card-item"><span class="card-label">Everyday Wear</span><span class="card-num">54</span></div>
+            <div class="card-item"><span class="card-label">Performance Apparel</span><span class="card-num">55</span></div>
+            <div class="card-item"><span class="card-label">Lightweight Apparel</span><span class="card-num">56</span></div>
+            <div class="card-item"><span class="card-label">Cold Weather Gear</span><span class="card-num">57</span></div>
+            <div class="card-item"><span class="card-label">Hot Weather Gear</span><span class="card-num">58</span></div>
+            <div class="card-item"><span class="card-label">Relaxed Fit Clothing</span><span class="card-num">59</span></div>
+            <div class="card-item"><span class="card-label">Matching Sets</span><span class="card-num">60</span></div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
