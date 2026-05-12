@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Facilitator Cheat Sheet — UA Card Sorting</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+
+/* ============================================================
+   SCREEN
+   ============================================================ */
+body {
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+    background: #f4f3f0;
+    color: #1a1a1a;
+    font-size: 13px;
+}
+.screen-header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.screen-header h1 { font-size: 17px; font-weight: 700; margin: 0; }
+.screen-header p { font-size: 12px; color: #999; margin: 4px 0 0; }
+.print-btn {
+    background: #f0a830;
+    color: #1a1a1a;
+    border: none;
+    padding: 10px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+}
+.print-btn:hover { background: #d9931f; }
+
+.sheet-wrapper { padding: 30px 40px; }
+
+/* ============================================================
+   CHEAT SHEET LAYOUT (designed for A4 portrait)
+   ============================================================ */
+.sheet {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 26px 28px;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.sheet-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 16px;
+}
+.sheet-title { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 3px; }
+.sheet-sub { font-size: 11px; color: #999; letter-spacing: 0.04em; text-transform: uppercase; }
+
+.session-badges { display: flex; gap: 6px; flex-shrink: 0; padding-top: 2px; }
+.badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+.badge.a { background: rgba(240,168,48,0.12); color: #d4831a; border: 1px solid rgba(240,168,48,0.3); }
+.badge.b { background: rgba(91,156,245,0.12); color: #3a7ed4; border: 1px solid rgba(91,156,245,0.3); }
+
+.rule-bar {
+    height: 2px;
+    background: #1a1a1a;
+    margin-bottom: 14px;
+}
+.rule-light {
+    height: 1px;
+    background: #e8e5e0;
+    margin: 12px 0;
+}
+
+/* Two-column layout for the main content */
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Step blocks */
+.step {
+    margin-bottom: 10px;
+}
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+.step-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0;
+}
+.step-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #444;
+}
+.step-timing {
+    font-size: 10px;
+    color: #bbb;
+    margin-left: auto;
+}
+
+/* Verbatim quote block */
+.say-block {
+    background: rgba(240,168,48,0.07);
+    border-left: 2px solid #f0a830;
+    padding: 7px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #1a1a1a;
+    line-height: 1.65;
+    border-radius: 0 3px 3px 0;
+    margin-bottom: 5px;
+}
+
+/* Probe block */
+.probe-block {
+    background: rgba(91,156,245,0.07);
+    border-left: 2px solid #5b9cf5;
+    padding: 7px 10px;
+    border-radius: 0 3px 3px 0;
+    margin-bottom: 5px;
+}
+.probe-block ul {
+    margin: 0;
+    padding-left: 12px;
+    font-size: 10.5px;
+    color: #333;
+    line-height: 1.6;
+}
+.probe-block li { margin-bottom: 2px; font-style: italic; }
+
+/* Do/Don't block */
+.do-dont {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 4px;
+}
+.do-box, .dont-box {
+    border-radius: 3px;
+    padding: 7px 9px;
+    font-size: 10.5px;
+}
+.do-box { background: rgba(82,185,109,0.08); border-left: 2px solid #52b96d; }
+.dont-box { background: rgba(223,85,85,0.07); border-left: 2px solid #df5555; }
+.do-box .box-label { color: #3d9b57; font-weight: 700; font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 4px; }
+.dont-box .box-label { color: #c44444; font-weight: 700; font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 4px; }
+.do-box ul, .dont-box ul { margin: 0; padding-left: 12px; color: #444; line-height: 1.6; }
+.do-box li, .dont-box li { margin-bottom: 2px; }
+
+/* Section label */
+.section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #bbb;
+    margin-bottom: 7px;
+}
+
+/* Timing footer */
+.timing-strip {
+    display: flex;
+    gap: 0;
+    border: 1px solid #e8e5e0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+.timing-cell {
+    flex: 1;
+    text-align: center;
+    padding: 5px 3px;
+    border-right: 1px solid #e8e5e0;
+    font-size: 9.5px;
+}
+.timing-cell:last-child { border-right: none; }
+.tc-label { color: #bbb; font-size: 9px; letter-spacing: 0.04em; text-transform: uppercase; }
+.tc-val { font-weight: 700; font-size: 10.5px; color: #444; margin-top: 1px; }
+
+/* Reminder pills at very bottom */
+.bottom-note {
+    text-align: center;
+    font-size: 10px;
+    color: #bbb;
+    margin-top: 10px;
+    letter-spacing: 0.03em;
+}
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print {
+    @page { size: A4 portrait; margin: 12mm 14mm; }
+    body { background: #fff; }
+    .screen-header { display: none; }
+    .sheet-wrapper { padding: 0; }
+    .sheet { border: none; padding: 0; max-width: 100%; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<div class="screen-header">
+    <div>
+        <h1>Facilitator Cheat Sheet</h1>
+        <p>Print one per facilitator. Laminate or slip into a sleeve for reuse.</p>
+    </div>
+    <button class="print-btn" onclick="window.print()">Print cheat sheet</button>
+</div>
+
+<div class="sheet-wrapper">
+<div class="sheet">
+
+    <!-- Top -->
+    <div class="sheet-header">
+        <div>
+            <div class="sheet-title">Card Sorting — Facilitator Cheat Sheet</div>
+            <div class="sheet-sub">UA CRO Project / Sparro Internal / First-timer guide</div>
+        </div>
+        <div class="session-badges">
+            <span class="badge a">60 cards</span>
+            <span class="badge b">~35 min</span>
+        </div>
+    </div>
+    <div class="rule-bar"></div>
+
+    <div class="two-col">
+
+        <!-- LEFT COLUMN -->
+        <div>
+
+            <!-- Step 1 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-num">1</div>
+                    <div class="step-label">Welcome</div>
+                    <div class="step-timing">2 min</div>
+                </div>
+                <div class="say-block">
+                    "Thanks for doing this. We're working on a project about how products are organised on a sporting goods website. No right or wrong answers: we want to understand how you think, not test you. About 30–35 minutes."
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-num">2</div>
+                    <div class="step-label">Task instructions</div>
+                    <div class="step-timing">2 min</div>
+                </div>
+                <div class="say-block">
+                    "Sort these cards into groups that make sense to you. You decide how many groups. Once done, give each group a name. Move cards anytime. If a card doesn't fit, set it aside."
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-num">3</div>
+                    <div class="step-label">Think-aloud + hand over deck</div>
+                    <div class="step-timing">20–30 min</div>
+                </div>
+                <div class="say-block">
+                    "Please think out loud as you work — tell me what you're thinking, even if it feels obvious."
+                </div>
+                <div style="font-size: 10.5px; color: #555; margin: 5px 0; padding: 0 2px;">
+                    Hand over the shuffled deck. Stay quiet. If they go silent:
+                </div>
+                <div class="say-block" style="border-color: #bbb; background: #f7f5f1;">
+                    "What's going through your mind right now?"
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-num">4</div>
+                    <div class="step-label">Group naming</div>
+                    <div class="step-timing">2 min</div>
+                </div>
+                <div class="say-block">
+                    "Can you write a name for each group on a sticky note and put it on top? Whatever label you'd give it on a website."
+                </div>
+                <div class="probe-block" style="margin-top: 4px;">
+                    <ul>
+                        <li>"Could any group split into two?"</li>
+                        <li>"Could any two groups merge?"</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div>
+
+            <!-- During-sort probes -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-num" style="background: #5b9cf5;">?</div>
+                    <div class="step-label" style="color: #3a7ed4;">During-sort probes</div>
+                    <div class="step-timing" style="color: #5b9cf5;">Use sparingly</div>
+                </div>
+                <div class="probe-block">
+                    <ul>
+                        <li>"What made you put those together?"</li>
+                        <li>"That took a moment. What were you deciding?"</li>
+                        <li>"You moved that card. What changed your mind?"</li>
+                        <li>"Could any card fit in two groups?"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 5: Debrief -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-num">5</div>
+                    <div class="step-label">Post-sort debrief</div>
+                    <div class="step-timing">3–5 min</div>
+                </div>
+                <div class="probe-block">
+                    <ul>
+                        <li>"Any card especially hard to place? Why?"</li>
+                        <li>"Any cards that could go in two groups?"</li>
+                        <li>"Any labels that were confusing?"</li>
+                        <li>"Does the number of groups feel right?"</li>
+                        <li>"Anything missing you'd expect to find?"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 6: Wrap -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-num" style="background: #52b96d;">6</div>
+                    <div class="step-label">Wrap up + record</div>
+                </div>
+                <div class="say-block" style="border-color: #52b96d; background: rgba(82,185,109,0.07);">
+                    "That's really helpful, thank you!"
+                </div>
+                <div style="font-size: 10px; color: #888; margin: 4px 0 2px 2px;">Before they leave:</div>
+                <div class="probe-block" style="background: rgba(82,185,109,0.06); border-color: #52b96d;">
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li>&#8594; Photo the full layout (top-down)</li>
+                        <li>&#8594; Write group names on observation sheet</li>
+                        <li>&#8594; Note any quotes or surprises</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Do / Don't -->
+            <div class="rule-light"></div>
+            <div class="section-title">Key rules</div>
+            <div class="do-dont">
+                <div class="do-box">
+                    <div class="box-label">Do</div>
+                    <ul>
+                        <li>Sit next to them</li>
+                        <li>Note their exact words</li>
+                        <li>Let silence sit</li>
+                    </ul>
+                </div>
+                <div class="dont-box">
+                    <div class="box-label">Do not</div>
+                    <ul>
+                        <li>Suggest any grouping</li>
+                        <li>Nod or react</li>
+                        <li>Show UA navigation</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="rule-light"></div>
+
+    <!-- Timing strip -->
+    <div class="section-title">Session timing</div>
+    <div class="timing-strip">
+        <div class="timing-cell"><div class="tc-label">Welcome</div><div class="tc-val">2 min</div></div>
+        <div class="timing-cell"><div class="tc-label">Instructions</div><div class="tc-val">2 min</div></div>
+        <div class="timing-cell"><div class="tc-label">Sorting</div><div class="tc-val">20–30 min</div></div>
+        <div class="timing-cell"><div class="tc-label">Naming</div><div class="tc-val">3 min</div></div>
+        <div class="timing-cell"><div class="tc-label">Debrief</div><div class="tc-val">5 min</div></div>
+        <div class="timing-cell"><div class="tc-label">Total</div><div class="tc-val">~35 min</div></div>
+    </div>
+
+    <div class="bottom-note">
+        Amber = read aloud exactly &nbsp;|&nbsp; Blue = use as needed &nbsp;|&nbsp; Record everything on the observation sheet
+    </div>
+
+</div>
+</div>
+
+</body>
+</html>
