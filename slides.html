@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UA Card Sorting — Facilitator Guide</title>
+
+<!-- Bricolage Grotesque (headings) + JetBrains Mono (verbatim scripts) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ============================================
+   THEME VARIABLES
+   Change these to retheme the whole deck
+   ============================================ */
+:root {
+    --bg:              #0b0b0b;
+    --surface:         #131313;
+    --surface-raised:  #1a1a1a;
+    --border:          #232323;
+    --border-dim:      #1c1c1c;
+
+    --text:            #ece6d8;
+    --text-dim:        #6a6459;
+    --text-faint:      #2e2c28;
+
+    --amber:           #f2a83a;
+    --amber-bg:        rgba(242, 168, 58, 0.09);
+    --amber-border:    rgba(242, 168, 58, 0.22);
+    --blue:            #5b9cf5;
+    --blue-bg:         rgba(91, 156, 245, 0.09);
+    --blue-border:     rgba(91, 156, 245, 0.22);
+    --green:           #52b96d;
+    --green-bg:        rgba(82, 185, 109, 0.09);
+    --green-border:    rgba(82, 185, 109, 0.22);
+    --red:             #df5555;
+    --red-bg:          rgba(223, 85, 85, 0.08);
+    --red-border:      rgba(223, 85, 85, 0.22);
+
+    --font-head:       'Bricolage Grotesque', sans-serif;
+    --font-mono:       'JetBrains Mono', monospace;
+
+    /* === VIEWPORT BASE: mandatory typography scale === */
+    --title-size:      clamp(1.5rem, 5vw, 4rem);
+    --h2-size:         clamp(1.25rem, 3.5vw, 2.5rem);
+    --h3-size:         clamp(1rem, 2.5vw, 1.75rem);
+    --body-size:       clamp(0.75rem, 1.5vw, 1.125rem);
+    --small-size:      clamp(0.65rem, 1vw, 0.875rem);
+    --slide-padding:   clamp(2rem, 5vw, 5rem);
+    --content-gap:     clamp(0.5rem, 2vw, 2rem);
+    --element-gap:     clamp(0.25rem, 1vw, 1rem);
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================
+   RESET
+   ============================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+button { background: none; border: none; cursor: pointer; font: inherit; color: inherit; }
+
+/* ============================================
+   VIEWPORT BASE (mandatory — included in full)
+   ============================================ */
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+.slide {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: var(--bg);
+}
+
+.slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 100%;
+    overflow: hidden;
+    padding: var(--slide-padding);
+}
+
+.card, .container, .content-box {
+    max-width: min(90vw, 1000px);
+    max-height: min(80vh, 700px);
+}
+
+.feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
+.feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.4; }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+
+img, .image-container {
+    max-width: 100%;
+    max-height: min(50vh, 400px);
+    object-fit: contain;
+}
+
+/* Short viewports */
+@media (max-height: 700px) {
+    :root {
+        --slide-padding: clamp(1.2rem, 3vw, 2.5rem);
+        --content-gap:   clamp(0.35rem, 1.2vw, 0.9rem);
+        --title-size:    clamp(1.25rem, 4.5vw, 2.5rem);
+        --h2-size:       clamp(1rem, 3vw, 1.75rem);
+    }
+}
+@media (max-height: 600px) {
+    :root {
+        --slide-padding: clamp(0.8rem, 2.5vw, 1.5rem);
+        --content-gap:   clamp(0.25rem, 0.8vw, 0.65rem);
+        --title-size:    clamp(1.1rem, 4vw, 2rem);
+        --body-size:     clamp(0.68rem, 1.2vw, 0.9rem);
+    }
+    .nav-dots, .keyboard-hint, .decorative { display: none; }
+}
+@media (max-height: 500px) {
+    :root {
+        --slide-padding: clamp(0.5rem, 2vw, 1rem);
+        --title-size:    clamp(1rem, 3.5vw, 1.5rem);
+        --h2-size:       clamp(0.9rem, 2.5vw, 1.25rem);
+        --body-size:     clamp(0.62rem, 1vw, 0.8rem);
+    }
+}
+@media (max-width: 600px) {
+    :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
+    .grid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+    html { scroll-behavior: auto; }
+}
+
+/* ============================================
+   BASE
+   ============================================ */
+body {
+    font-family: var(--font-head);
+    color: var(--text);
+    background: var(--bg);
+}
+
+/* ============================================
+   ANIMATIONS
+   Slides fade + rise when entering viewport
+   ============================================ */
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.45s var(--ease),
+                transform 0.45s var(--ease);
+}
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.reveal:nth-child(1) { transition-delay: 0.04s; }
+.reveal:nth-child(2) { transition-delay: 0.1s; }
+.reveal:nth-child(3) { transition-delay: 0.16s; }
+.reveal:nth-child(4) { transition-delay: 0.22s; }
+.reveal:nth-child(5) { transition-delay: 0.28s; }
+.reveal:nth-child(6) { transition-delay: 0.34s; }
+.reveal:nth-child(7) { transition-delay: 0.40s; }
+
+/* ============================================
+   PROGRESS BAR (top of screen)
+   ============================================ */
+.progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--amber);
+    z-index: 100;
+    transition: width 0.4s var(--ease);
+    width: 0%;
+}
+
+/* ============================================
+   NAV DOTS (right edge)
+   ============================================ */
+.nav-dots {
+    position: fixed;
+    right: clamp(0.8rem, 2vw, 1.4rem);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.45rem, 0.9vh, 0.75rem);
+    z-index: 100;
+}
+.nav-dot {
+    width: clamp(5px, 0.55vw, 7px);
+    height: clamp(5px, 0.55vw, 7px);
+    border-radius: 50%;
+    background: var(--text-faint);
+    transition: background 0.2s, transform 0.2s;
+}
+.nav-dot.active {
+    background: var(--amber);
+    transform: scale(1.4);
+}
+
+/* ============================================
+   SLIDE NUMBER (top-right)
+   ============================================ */
+.slide-num {
+    position: absolute;
+    top: clamp(0.9rem, 2.2vh, 1.6rem);
+    right: clamp(1.2rem, 3.5vw, 3.5rem);
+    font-family: var(--font-mono);
+    font-size: clamp(0.55rem, 0.85vw, 0.75rem);
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+}
+
+/* ============================================
+   TAG BADGES
+   Coloured labels indicating slide purpose
+   ============================================ */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.28em 0.75em;
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: clamp(0.52rem, 0.82vw, 0.68rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: clamp(0.6rem, 1.8vh, 1.4rem);
+    width: fit-content;
+}
+.tag.amber  { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-border); }
+.tag.blue   { background: var(--blue-bg);   color: var(--blue);   border: 1px solid var(--blue-border); }
+.tag.green  { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green-border); }
+.tag.neutral { background: rgba(255,255,255,0.04); color: var(--text-dim); border: 1px solid var(--border); }
+
+/* ============================================
+   SLIDE HEADING
+   ============================================ */
+.slide-heading {
+    font-family: var(--font-head);
+    font-size: clamp(1.4rem, 2.7vw, 2.2rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin-bottom: clamp(0.8rem, 2.2vh, 1.8rem);
+}
+
+/* ============================================
+   VERBATIM BLOCK (read aloud)
+   Monospace + amber left border = "say this"
+   ============================================ */
+.verbatim {
+    background: var(--surface-raised);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 5px 5px 0;
+    padding: clamp(0.9rem, 2.2vw, 1.6rem) clamp(1.1rem, 2.8vw, 2.2rem);
+    font-family: var(--font-mono);
+    font-size: clamp(0.76rem, 1.28vw, 0.98rem);
+    color: var(--text);
+    line-height: 1.8;
+}
+
+/* ============================================
+   CHECKLIST (before-you-start items)
+   ============================================ */
+.checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.55rem, 1.3vh, 1.1rem);
+}
+.checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(0.7rem, 1.4vw, 1.1rem);
+    font-size: clamp(0.84rem, 1.45vw, 1.08rem);
+    color: var(--text);
+    line-height: 1.5;
+}
+.check-box {
+    flex-shrink: 0;
+    width: clamp(14px, 1.35vw, 19px);
+    height: clamp(14px, 1.35vw, 19px);
+    border: 1.5px solid var(--border);
+    border-radius: 2px;
+    background: var(--surface);
+    margin-top: 0.18em;
+}
+
+/* ============================================
+   PROBE LIST (questions / optional prompts)
+   Blue left border = "optional, as needed"
+   ============================================ */
+.probe-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.45rem, 1.1vh, 0.9rem);
+}
+.probe-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(0.6rem, 1.2vw, 0.9rem);
+    font-family: var(--font-mono);
+    font-size: clamp(0.76rem, 1.28vw, 0.97rem);
+    color: var(--text);
+    line-height: 1.65;
+    padding: clamp(0.55rem, 1.2vh, 0.9rem) clamp(0.85rem, 1.6vw, 1.3rem);
+    background: var(--blue-bg);
+    border-left: 2px solid var(--blue);
+    border-radius: 0 4px 4px 0;
+}
+.probe-num {
+    color: var(--blue);
+    font-weight: 700;
+    font-size: clamp(0.65rem, 0.95vw, 0.8rem);
+    flex-shrink: 0;
+    min-width: 1.8em;
+    margin-top: 0.05em;
+}
+
+/* ============================================
+   WARNING BOX (do not do this)
+   ============================================ */
+.warn-box {
+    background: var(--red-bg);
+    border: 1px solid var(--red-border);
+    border-radius: 3px;
+    padding: clamp(0.5rem, 1.2vh, 0.9rem) clamp(0.85rem, 1.6vw, 1.3rem);
+    font-family: var(--font-mono);
+    font-size: clamp(0.68rem, 1.05vw, 0.84rem);
+    color: var(--red);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+}
+
+/* ============================================
+   IF-QUIET PROMPT (facilitator reminder)
+   ============================================ */
+.if-quiet {
+    background: var(--surface);
+    border-radius: 3px;
+    padding: clamp(0.5rem, 1.2vh, 0.85rem) clamp(0.85rem, 1.6vw, 1.3rem);
+    border-left: 2px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: clamp(0.7rem, 1.1vw, 0.87rem);
+    color: var(--text-dim);
+    line-height: 1.6;
+}
+.if-quiet strong { color: var(--text); font-weight: 600; }
+
+/* ============================================
+   NOTE TEXT (secondary info)
+   ============================================ */
+.note {
+    font-size: clamp(0.7rem, 1.1vw, 0.86rem);
+    color: var(--text-dim);
+    line-height: 1.5;
+}
+
+/* ============================================
+   SECTION LABEL (for split slides like slide 7)
+   ============================================ */
+.section-label {
+    font-family: var(--font-mono);
+    font-size: clamp(0.55rem, 0.85vw, 0.7rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: clamp(0.35rem, 0.9vh, 0.65rem);
+}
+.section-label.amber { color: var(--amber); }
+.section-label.blue  { color: var(--blue); }
+
+/* ============================================
+   DIVIDER
+   ============================================ */
+.divider {
+    height: 1px;
+    background: var(--border-dim);
+    margin: clamp(0.7rem, 1.8vh, 1.4rem) 0;
+}
+
+/* ============================================
+   WRAP-UP RECORD LIST (session done slide)
+   ============================================ */
+.wrap-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.4rem, 1vh, 0.8rem);
+}
+.wrap-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75em;
+    font-family: var(--font-mono);
+    font-size: clamp(0.74rem, 1.22vw, 0.93rem);
+    color: var(--text);
+    line-height: 1.5;
+}
+.wrap-list li::before {
+    content: '→';
+    color: var(--green);
+    flex-shrink: 0;
+    font-weight: 700;
+}
+
+/* ============================================
+   TITLE SLIDE (slide 1)
+   Left-bottom anchored, large sparse heading
+   ============================================ */
+.title-slide .slide-content {
+    justify-content: flex-end;
+    padding-bottom: clamp(2.5rem, 7vh, 5rem);
+}
+.amber-bar {
+    width: clamp(2.5rem, 5vw, 4.5rem);
+    height: 3px;
+    background: var(--amber);
+    margin-bottom: clamp(1.2rem, 3vh, 2.2rem);
+}
+.main-title {
+    font-family: var(--font-head);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: clamp(0.5rem, 1.5vh, 1.1rem);
+}
+.main-subtitle {
+    font-family: var(--font-mono);
+    font-size: clamp(0.68rem, 1.1vw, 0.88rem);
+    color: var(--text-dim);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin-bottom: clamp(1.2rem, 3.5vh, 2.5rem);
+}
+.session-pills {
+    display: flex;
+    gap: clamp(0.5rem, 1.5vw, 0.9rem);
+    flex-wrap: wrap;
+}
+.session-pill {
+    font-family: var(--font-mono);
+    font-size: clamp(0.62rem, 0.95vw, 0.78rem);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.3em 0.9em;
+}
+
+/* ============================================
+   TASK VISUAL — slide 4 card-sort diagram
+   ============================================ */
+.task-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+    margin-bottom: clamp(0.8rem, 2vh, 1.4rem);
+    flex-wrap: wrap;
+}
+.task-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45em;
+}
+.step-caption {
+    font-family: var(--font-mono);
+    font-size: clamp(0.5rem, 0.78vw, 0.65rem);
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+}
+/* Fanned/scattered pile of cards */
+.cards-fan {
+    position: relative;
+    width: clamp(90px, 11vw, 140px);
+    height: clamp(60px, 8vh, 88px);
+}
+.fan-card {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform-origin: center center;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.35em 0.8em;
+    font-family: var(--font-mono);
+    font-size: clamp(0.52rem, 0.82vw, 0.66rem);
+    color: var(--text);
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.fan-card:nth-child(1) { transform: translate(-50%, -50%) rotate(-14deg) translate(-22px, 10px); z-index: 1; }
+.fan-card:nth-child(2) { transform: translate(-50%, -50%) rotate(-6deg) translate(-8px, 4px);  z-index: 2; }
+.fan-card:nth-child(3) { transform: translate(-50%, -50%) rotate(3deg)  translate(6px, -3px);  z-index: 3; }
+.fan-card:nth-child(4) { transform: translate(-50%, -50%) rotate(12deg) translate(20px, -8px); z-index: 4; }
+
+/* Flow arrow */
+.flow-arrow {
+    font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+    color: var(--amber);
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+/* Groups visual */
+.groups-visual {
+    display: flex;
+    gap: clamp(0.4rem, 1vw, 0.9rem);
+    align-items: flex-start;
+}
+.card-group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
+    min-width: clamp(60px, 8vw, 96px);
+}
+.sticky-note {
+    background: rgba(242,168,58,0.13);
+    border: 1px solid var(--amber-border);
+    color: var(--amber);
+    font-family: var(--font-mono);
+    font-size: clamp(0.48rem, 0.76vw, 0.62rem);
+    font-weight: 700;
+    padding: 0.22em 0.6em;
+    border-radius: 2px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 1px;
+}
+.group-card {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.28em 0.55em;
+    font-family: var(--font-mono);
+    font-size: clamp(0.48rem, 0.75vw, 0.6rem);
+    color: var(--text);
+    text-align: center;
+    white-space: nowrap;
+}
+.group-card.dim {
+    color: var(--text-dim);
+    border-color: var(--border-dim);
+    border-style: dashed;
+}
+
+/* "Set aside" small pile */
+.aside-pile {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
+    min-width: clamp(50px, 6.5vw, 80px);
+    opacity: 0.65;
+}
+.aside-label {
+    font-family: var(--font-mono);
+    font-size: clamp(0.46rem, 0.72vw, 0.58rem);
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+    padding-bottom: 3px;
+    border-bottom: 1px dashed var(--border);
+    margin-bottom: 1px;
+}
+
+/* Large faint "UA" background decoration (title slide only) */
+.title-bg-text {
+    position: absolute;
+    top: 50%;
+    right: clamp(2rem, 6vw, 6rem);
+    transform: translateY(-50%);
+    font-family: var(--font-head);
+    font-size: clamp(8rem, 22vw, 20rem);
+    font-weight: 700;
+    color: var(--text-faint);
+    letter-spacing: -0.05em;
+    user-select: none;
+    pointer-events: none;
+    line-height: 1;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Top progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Right-side navigation dots -->
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+
+<!-- ============================================================
+     SLIDE 1: TITLE
+     ============================================================ -->
+<section class="slide title-slide" id="slide-1">
+    <div class="slide-num">01 / 09</div>
+    <!-- Faint background "UA" for visual interest -->
+    <div class="title-bg-text" aria-hidden="true">UA</div>
+    <div class="slide-content">
+        <div class="amber-bar reveal"></div>
+        <h1 class="main-title reveal">UA Card Sorting<br>Workshop</h1>
+        <p class="main-subtitle reveal">Facilitator Guide / Internal Use Only</p>
+        <div class="session-pills reveal">
+            <span class="session-pill">60 cards / single deck</span>
+            <span class="session-pill">~35 min per participant</span>
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 2: BEFORE YOU START
+     ============================================================ -->
+<section class="slide" id="slide-2">
+    <div class="slide-num">02 / 09</div>
+    <div class="slide-content">
+        <div class="tag neutral reveal">Setup</div>
+        <h2 class="slide-heading reveal">Before you start</h2>
+        <ul class="checklist">
+            <li class="reveal"><span class="check-box"></span>Cards printed, cut, and shuffled (different order per participant)</li>
+            <li class="reveal"><span class="check-box"></span>Blank sticky notes and pens on the table</li>
+            <li class="reveal"><span class="check-box"></span>Observation sheet ready</li>
+            <li class="reveal"><span class="check-box"></span>Seat next to participant, not across</li>
+            <li class="reveal"><span class="check-box"></span>Notepad on hand, no screen note-taking visible</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 3: WELCOME SCRIPT
+     ============================================================ -->
+<section class="slide" id="slide-3">
+    <div class="slide-num">03 / 09</div>
+    <div class="slide-content">
+        <div class="tag amber reveal">Read Aloud</div>
+        <h2 class="slide-heading reveal">Welcome script</h2>
+        <div class="verbatim reveal">
+            "Thanks for doing this. We're working on a project about how products are organised on a sporting goods website. There are no right or wrong answers: we're trying to understand how you think, not test your knowledge.
+            <br><br>
+            This should take about 30 to 35 minutes."
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 4: TASK INSTRUCTIONS (visual)
+     ============================================================ -->
+<section class="slide" id="slide-4">
+    <div class="slide-num">04 / 09</div>
+    <div class="slide-content">
+        <div class="tag amber reveal">Read Aloud</div>
+        <h2 class="slide-heading reveal">Task instructions</h2>
+
+        <!-- Visual card-sort diagram -->
+        <div class="task-visual reveal">
+
+            <!-- Left: shuffled pile -->
+            <div class="task-step">
+                <div class="cards-fan">
+                    <div class="fan-card">Leggings</div>
+                    <div class="fan-card">Soccer</div>
+                    <div class="fan-card">Hoodies</div>
+                    <div class="fan-card">Running</div>
+                </div>
+                <div class="step-caption">Shuffled deck</div>
+            </div>
+
+            <!-- Arrow -->
+            <div class="flow-arrow">&#8594;</div>
+
+            <!-- Right: grouped cards + aside -->
+            <div class="task-step">
+                <div class="groups-visual">
+
+                    <div class="card-group">
+                        <div class="sticky-note">Sport</div>
+                        <div class="group-card">Running</div>
+                        <div class="group-card">Soccer</div>
+                        <div class="group-card">Basketball</div>
+                    </div>
+
+                    <div class="card-group">
+                        <div class="sticky-note">Apparel</div>
+                        <div class="group-card">Hoodies</div>
+                        <div class="group-card">Leggings</div>
+                        <div class="group-card">Jackets</div>
+                    </div>
+
+                    <div class="card-group">
+                        <div class="sticky-note">Shoes</div>
+                        <div class="group-card">Cleats</div>
+                        <div class="group-card">Socks</div>
+                        <div class="group-card">Slides</div>
+                    </div>
+
+                    <div class="aside-pile">
+                        <div class="aside-label">set aside</div>
+                        <div class="group-card dim">Sportstyle</div>
+                        <div class="group-card dim">Studio</div>
+                    </div>
+
+                </div>
+                <div class="step-caption">Your groups + sticky note names</div>
+            </div>
+
+        </div>
+
+        <!-- Short verbatim -->
+        <div class="verbatim reveal">
+            "Sort the cards into groups that make sense to you. You decide how many groups. Once done, I'll ask you to name each group. Move cards anytime. If a card doesn't fit anywhere, just set it aside."
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 5: THINK-ALOUD PROMPT
+     ============================================================ -->
+<section class="slide" id="slide-5">
+    <div class="slide-num">05 / 09</div>
+    <div class="slide-content">
+        <div class="tag amber reveal">Read Aloud, Then Hand Over Deck</div>
+        <h2 class="slide-heading reveal">Think-aloud prompt</h2>
+        <div class="verbatim reveal">
+            "One thing that helps us a lot: please think out loud as you work. Tell me what you're thinking as you group things. Even if it feels obvious, say it out loud."
+        </div>
+        <div class="if-quiet reveal" style="margin-top: clamp(0.7rem, 1.8vh, 1.3rem);">
+            <strong>If they go quiet, prompt:</strong> &ldquo;What's going through your mind right now?&rdquo;
+        </div>
+        <div class="warn-box reveal" style="margin-top: clamp(0.6rem, 1.5vh, 1.1rem);">
+            Do NOT suggest groupings &nbsp;|&nbsp; Do NOT react with approval or disapproval
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 6: DURING-SORT PROBES
+     ============================================================ -->
+<section class="slide" id="slide-6">
+    <div class="slide-num">06 / 09</div>
+    <div class="slide-content">
+        <div class="tag blue reveal">Use Sparingly</div>
+        <h2 class="slide-heading reveal">During-sort probes</h2>
+        <ul class="probe-list">
+            <li class="reveal">&ldquo;What made you put those together?&rdquo;</li>
+            <li class="reveal">&ldquo;That one seemed to take a moment. What were you deciding?&rdquo;</li>
+            <li class="reveal">&ldquo;You moved that card a couple of times. What changed your mind?&rdquo;</li>
+            <li class="reveal">&ldquo;Is there a card that could fit in more than one group?&rdquo;</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 7: GROUP NAMING
+     ============================================================ -->
+<section class="slide" id="slide-7">
+    <div class="slide-num">07 / 09</div>
+    <div class="slide-content">
+        <h2 class="slide-heading reveal">Group naming</h2>
+        <div class="section-label amber reveal">Say this</div>
+        <div class="verbatim reveal" style="margin-bottom: clamp(0.9rem, 2.2vh, 1.7rem);">
+            "Now can you write a name for each group on a sticky note and put it on top of the pile? Whatever label you'd give it on a website."
+        </div>
+        <div class="section-label blue reveal">Then ask</div>
+        <ul class="probe-list">
+            <li class="reveal">&ldquo;Does any group feel like it could be split into two?&rdquo;</li>
+            <li class="reveal">&ldquo;Are any two groups close enough you'd consider merging them?&rdquo;</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 8: POST-SORT DEBRIEF
+     ============================================================ -->
+<section class="slide" id="slide-8">
+    <div class="slide-num">08 / 09</div>
+    <div class="slide-content">
+        <div class="tag blue reveal">Debrief Questions</div>
+        <h2 class="slide-heading reveal">Post-sort questions</h2>
+        <ul class="probe-list">
+            <li class="reveal"><span class="probe-num">01</span>&ldquo;Was there a card that was especially hard to place? Why?&rdquo;</li>
+            <li class="reveal"><span class="probe-num">02</span>&ldquo;Were there any cards that could go in two different groups?&rdquo;</li>
+            <li class="reveal"><span class="probe-num">03</span>&ldquo;Were there any cards where the label itself was confusing?&rdquo;</li>
+            <li class="reveal"><span class="probe-num">04</span>&ldquo;Does the number of groups feel right, or would a real website have more or fewer?&rdquo;</li>
+            <li class="reveal"><span class="probe-num">05</span>&ldquo;Looking at your groups, is anything missing you'd expect to find?&rdquo;</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 9: WRAP UP
+     ============================================================ -->
+<section class="slide" id="slide-9">
+    <div class="slide-num">09 / 09</div>
+    <div class="slide-content">
+        <div class="tag green reveal">Session Done</div>
+        <h2 class="slide-heading reveal">Wrap up</h2>
+        <div class="verbatim reveal" style="margin-bottom: clamp(0.9rem, 2.2vh, 1.7rem);">
+            "That's really helpful, thank you!"
+        </div>
+        <p class="note reveal" style="margin-bottom: clamp(0.45rem, 1.1vh, 0.8rem);">Before they leave:</p>
+        <ul class="wrap-list">
+            <li class="reveal">Photo the full card layout top-down</li>
+            <li class="reveal">Write group names on observation sheet (their exact words)</li>
+            <li class="reveal">Note any quotes or surprises</li>
+        </ul>
+        <div class="divider reveal"></div>
+        <p class="note reveal">Shuffle cards, reset the table, ready for next participant.</p>
+    </div>
+</section>
+
+
+<script>
+/* ============================================================
+   SLIDE PRESENTATION CONTROLLER
+   Keyboard, touch, mouse wheel navigation
+   + intersection observer for reveal animations
+   ============================================================ */
+class SlidePresentation {
+    constructor() {
+        this.slides    = Array.from(document.querySelectorAll('.slide'));
+        this.total     = this.slides.length;
+        this.current   = 0;
+        this.scrolling = false; /* debounce wheel events */
+
+        this.buildNavDots();
+        this.setupObserver();
+        this.setupKeyboard();
+        this.setupTouch();
+        this.setupWheel();
+        this.activateIndex(0);
+    }
+
+    /* --- Navigation dots --- */
+    buildNavDots() {
+        const nav = document.getElementById('navDots');
+        this.slides.forEach((_, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'nav-dot';
+            btn.setAttribute('aria-label', `Go to slide ${i + 1}`);
+            btn.addEventListener('click', () => this.goTo(i));
+            nav.appendChild(btn);
+        });
+        this.dots = Array.from(nav.querySelectorAll('.nav-dot'));
+    }
+
+    /* --- Intersection Observer: add .visible when slide enters viewport --- */
+    setupObserver() {
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    this.activateIndex(this.slides.indexOf(entry.target));
+                }
+            });
+        }, { threshold: 0.5 });
+        this.slides.forEach(s => obs.observe(s));
+    }
+
+    /* --- Keyboard: arrows, space, page keys --- */
+    setupKeyboard() {
+        document.addEventListener('keydown', e => {
+            const fwd = ['ArrowDown', 'ArrowRight', ' ', 'PageDown'];
+            const bwd = ['ArrowUp', 'ArrowLeft', 'PageUp'];
+            if (fwd.includes(e.key)) { e.preventDefault(); this.goTo(this.current + 1); }
+            if (bwd.includes(e.key)) { e.preventDefault(); this.goTo(this.current - 1); }
+        });
+    }
+
+    /* --- Touch / swipe --- */
+    setupTouch() {
+        let startY = 0;
+        document.addEventListener('touchstart', e => {
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+        document.addEventListener('touchend', e => {
+            const delta = startY - e.changedTouches[0].clientY;
+            if (Math.abs(delta) > 50) this.goTo(this.current + (delta > 0 ? 1 : -1));
+        }, { passive: true });
+    }
+
+    /* --- Mouse wheel (debounced to one slide per scroll gesture) --- */
+    setupWheel() {
+        document.addEventListener('wheel', e => {
+            if (this.scrolling) return;
+            this.scrolling = true;
+            this.goTo(this.current + (e.deltaY > 0 ? 1 : -1));
+            setTimeout(() => { this.scrolling = false; }, 850);
+        }, { passive: true });
+    }
+
+    /* --- Navigate to a clamped index --- */
+    goTo(idx) {
+        const n = Math.max(0, Math.min(this.total - 1, idx));
+        if (n === this.current) return;
+        this.current = n;
+        this.slides[n].scrollIntoView({ behavior: 'smooth' });
+        this.activateIndex(n);
+    }
+
+    /* --- Update progress bar and active dot --- */
+    activateIndex(idx) {
+        if (idx < 0 || idx >= this.total) return;
+        this.current = idx;
+        /* Progress bar */
+        const pct = this.total > 1 ? (idx / (this.total - 1)) * 100 : 100;
+        document.getElementById('progressBar').style.width = pct + '%';
+        /* Dots */
+        this.dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+}
+
+new SlidePresentation();
+</script>
+
+</body>
+</html>
